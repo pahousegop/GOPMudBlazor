@@ -5,7 +5,7 @@
     <MudTextEditor @ref="@quill" Theme="bubble" Label="Notes" Variant="Variant.Outlined" Style="width: 400px; height: 400px;">
         
         <EditorContent>
-            @((MarkupString?)Content)
+            <span>@((MarkupString?)Content)</span>
         </EditorContent>
     </MudTextEditor>
 </div><br />
