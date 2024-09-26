@@ -24,6 +24,9 @@ jobs:
       with:
          versionSpec: '5.x'
 
+    - name: Verify GitVersion installation   
+      run: dotnet-gitversion --version
+      
     - name: Determine Version
       id: version_step # step id used as reference for output values
       uses: gittools/actions/gitversion/execute@v1.1.1
