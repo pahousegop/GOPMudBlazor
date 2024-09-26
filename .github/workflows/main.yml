@@ -2,7 +2,7 @@ name: .NET Core Build and Publish
 
 on: 
   push:
-    branches: [ LivePackage ]
+    branches: [ main ]
   workflow_dispatch:
    
 env:
