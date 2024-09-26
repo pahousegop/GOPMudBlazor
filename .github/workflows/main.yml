@@ -25,7 +25,7 @@ jobs:
          versionSpec: '5.x'
 
     - name: Verify GitVersion installation   
-      run: dotnet-gitversion --version
+      run: dotnet-gitversion
       
     - name: Determine Version
       id: version_step # step id used as reference for output values
