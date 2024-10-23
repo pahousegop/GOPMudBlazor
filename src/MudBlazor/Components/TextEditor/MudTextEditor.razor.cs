@@ -12,6 +12,9 @@ namespace MudBlazor
         public RenderFragment EditorContent { get; set; }
 
         [Parameter]
+        public RenderFragment EditButtons { get; set; }
+
+        [Parameter]
         public string UniqueID { get; set; }
 
         [Parameter]
