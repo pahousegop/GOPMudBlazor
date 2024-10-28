@@ -56,3 +56,11 @@
     overflow-y: auto;
   }
 }
+
+.HideSelectGOPPopover {
+  display: none !important;
+}
+
+.ShowSelectGOPPopover {
+  display: block;
+}
