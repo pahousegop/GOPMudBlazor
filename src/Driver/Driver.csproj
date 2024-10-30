@@ -14,4 +14,8 @@
     <Folder Include="wwwroot\JS\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HouseRepCore" Version="1.1.194" />
+  </ItemGroup>
+
 </Project>

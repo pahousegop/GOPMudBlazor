@@ -1,34 +1,69 @@
 ﻿@page "/"
+@using DTO
+@using HouseRepCore
 
 <PageTitle>Home</PageTitle>
+
 <div style="display:block;">
-    <MudTextEditor @ref="@quill" Theme="bubble" Label="Notes" Variant="Variant.Outlined" Style="width: 400px; height: 400px;">
+    @* <MudSelect T="int" @bind-Value="selectedID" Label="Select drink" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary" AnchorOrigin="Origin.BottomCenter">
+
+        @foreach (var item in billTypeDropdownValues)
+        {
+            <MudSelectItem Value="@item.BillTypeID">@item.FullDescription</MudSelectItem>
+        }
+    </MudSelect> *@
+    <MudSelectGOP2 T="int" @bind-Value="selectedID" Label="Select drink" OpenIcon="@Icons.Material.Filled.LocalDrink" AdornmentColor="Color.Secondary" AnchorOrigin="Origin.BottomCenter">
         
-        <EditorContent>
-            <span>@((MarkupString?)Content)</span>
-        </EditorContent>
-    </MudTextEditor>
-</div><br />
- <div>
-    <MudButton  OnClick="SaveItem" >button</MudButton>
-</div> 
+        @foreach (var item in billTypeDropdownValues)
+        {
+            <MudSelectItemGOP2 Value="@item.BillTypeID">@item.FullDescription</MudSelectItemGOP2>
+        }
+    </MudSelectGOP2>
+   
+</div>
+<br />
+<div>
+    <MudButton OnClick="SaveItem">button</MudButton>
+</div>
 @code {
     //string? MyDate;
+     private Drink enumValue { get; set; } = Drink.Cider;
+     public enum Drink { Tea, SparklingWater, SoftDrink, Cider, Beer, Wine, Moonshine, Wodka, Cola, GreeTea, FruitJuice, Lemonade, HotWater, SpringWater, IceWater, }
+
+    private int selectedID = 113880;
     //string  usDate = "";
 
+
+    private List<BillType> billTypeDropdownValues { get; set; } = new List<BillType>();
+
     //IMask mask2 = new DateMask("MM/dd/yyyy");
+
+
+
     [Parameter] public string Content { get; set; } = "test content";
+
     public string textFieldValue { get; set; } = "This is the field";
+
     public MudTextEditor quill = new();
 
-    protected override void OnInitialized()
+
+
+    protected override  void OnInitialized()
     {
+
         //MudGlobal.InputDefaults.Variant = Variant.Outlined;
+        billTypeDropdownValues = DB.GetList<BillType>("SELECT top 100 * FROM BillType WHERE Dataset = '106' AND DeleteDate IS NULL", false, "@dataset", "106");
+        StateHasChanged();
     }
 
+
+
     private async void SaveItem()
+
     {
+
         var t = await quill.GetHTML();
+
     }
 }
 

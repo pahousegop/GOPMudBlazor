@@ -7,37 +7,37 @@ using MudBlazor.Utilities;
 namespace MudBlazor
 {
     /// <summary>
-    /// Represents an option of a select or multi-select. To be used inside MudSelectGOP.
+    /// Represents an option of a select or multi-select. To be used inside MudSelect.
     /// </summary>
-    public partial class MudSelectItemGOP<T> : MudBaseSelectItem, IDisposable
+    public partial class MudSelectItemGOP2<T> : MudBaseSelectItem, IDisposable
     {
         private string GetCssClasses() => new CssBuilder()
             .AddClass(Class)
             .Build();
 
-        private IMudSelectGOP _parent;
+        private IMudSelect _parent;
         internal string ItemId { get; } = Identifier.Create();
 
         /// <summary>
         /// The parent select component
         /// </summary>
         [CascadingParameter]
-        internal IMudSelectGOP IMudSelectGOP
+        internal IMudSelect IMudSelect
         {
-            get => (IMudSelectGOP)_parent;
+            get => _parent;
             set
             {
                 _parent = value;
                 if (_parent == null)
                     return;
                 _parent.CheckGenericTypeMatch(this);
-                if (MudSelectGOP == null)
+                if (MudSelect == null)
                     return;
-                var selected = MudSelectGOP.Add(this);
+                var selected = MudSelect.Add(this);
                 if (_parent.MultiSelection)
                 {
-                    MudSelectGOP.SelectionChangedFromOutside += OnUpdateSelectionStateFromOutside;
-                    InvokeAsync(() => OnUpdateSelectionStateFromOutside(MudSelectGOP.SelectedValues));
+                    MudSelect.SelectionChangedFromOutside += OnUpdateSelectionStateFromOutside;
+                    InvokeAsync(() => OnUpdateSelectionStateFromOutside(MudSelect.SelectedValues));
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace MudBlazor
             set
             {
                 _shadowParent = value;
-                ((MudSelectGOP<T>)_shadowParent)?.RegisterShadowItem(this);
+                ((MudSelectGOP2<T>)_shadowParent)?.RegisterShadowItem(this);
             }
         }
 
@@ -67,7 +67,7 @@ namespace MudBlazor
         [CascadingParameter(Name = "HideContent")]
         internal bool HideContent { get; set; }
 
-        internal MudSelectGOP<T> MudSelectGOP => (MudSelectGOP<T>)IMudSelectGOP;
+        internal MudSelectGOP2<T> MudSelect => (MudSelectGOP2<T>)IMudSelect;
 
         private void OnUpdateSelectionStateFromOutside(IEnumerable<T> selection)
         {
@@ -93,9 +93,9 @@ namespace MudBlazor
         {
             get
             {
-                if (MudSelectGOP == null)
+                if (MudSelect == null)
                     return false;
-                return MudSelectGOP.MultiSelection;
+                return MudSelect.MultiSelection;
             }
         }
 
@@ -128,7 +128,7 @@ namespace MudBlazor
         {
             get
             {
-                var converter = MudSelectGOP?.Converter;
+                var converter = MudSelect?.Converter;
                 if (converter == null)
                     return $"{Value}";
                 return converter.Set(Value);
@@ -140,7 +140,7 @@ namespace MudBlazor
             if (MultiSelection)
                 Selected = !Selected;
 
-            MudSelectGOP?.SelectOption(Value);
+            MudSelect?.SelectOption(Value);
             InvokeAsync(StateHasChanged);
         }
 
@@ -148,8 +148,8 @@ namespace MudBlazor
         {
             try
             {
-                MudSelectGOP?.Remove(this);
-                ((MudSelectGOP<T>)_shadowParent)?.UnregisterShadowItem(this);
+                MudSelect?.Remove(this);
+                ((MudSelectGOP2<T>)_shadowParent)?.UnregisterShadowItem(this);
             }
             catch (Exception) { }
         }

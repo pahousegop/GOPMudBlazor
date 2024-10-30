@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Driver.Components;
+using HouseRepCore;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -23,6 +24,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.HideTransitionDuration = 200;
     config.SnackbarConfiguration.ShowTransitionDuration = 300;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+    config.PopoverOptions.Mode = PopoverMode.Legacy;
 });
 
 var app = builder.Build();
@@ -34,6 +36,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+DB._config = app.Configuration;
 
 app.UseHttpsRedirection();
 

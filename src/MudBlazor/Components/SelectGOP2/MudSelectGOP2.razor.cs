@@ -10,7 +10,7 @@ using MudBlazor.Utilities.Exceptions;
 
 namespace MudBlazor
 {
-    public partial class MudSelectGOP<T> : MudBaseInput<T>, IMudSelectGOP, IMudShadowSelectGOP
+    public partial class MudSelectGOP2<T> : MudBaseInput<T>, IMudSelect, IMudShadowSelect
     {
         private HashSet<T> _selectedValues = new HashSet<T>();
         private IEqualityComparer<T> _comparer;
@@ -51,7 +51,7 @@ namespace MudBlazor
             var index = _items.FindIndex(x => x.ItemId == (string)_activeItemId);
             if (direction < 0 && index < 0)
                 index = 0;
-            MudSelectItemGOP<T> item = null;
+            MudSelectItemGOP2<T> item = null;
             // the loop allows us to jump over disabled items until we reach the next non-disabled one
             for (var i = 0; i < _items.Count; i++)
             {
@@ -82,7 +82,7 @@ namespace MudBlazor
             await _elementReference.SetText(Text);
             await ScrollToItemAsync(item);
         }
-        private ValueTask ScrollToItemAsync(MudSelectItemGOP<T> item)
+        private ValueTask ScrollToItemAsync(MudSelectItemGOP2<T> item)
             => item != null ? ScrollManager.ScrollToListItemAsync(item.ItemId) : ValueTask.CompletedTask;
         private async Task SelectFirstItem(string startChar = null)
         {
@@ -167,7 +167,7 @@ namespace MudBlazor
         [Parameter] public EventCallback OnClose { get; set; }
 
         /// <summary>
-        /// Add the MudSelectItemsGOP here
+        /// Add the MudSelectItems here
         /// </summary>
         [Parameter]
         [Category(CategoryTypes.FormComponent.ListBehavior)]
@@ -329,7 +329,7 @@ namespace MudBlazor
             }
         }
 
-        public MudSelectGOP()
+        public MudSelectGOP2()
         {
             Adornment = Adornment.End;
             IconSize = Size.Medium;
@@ -458,15 +458,15 @@ namespace MudBlazor
         /// <summary>
         /// The collection of items within this select
         /// </summary>
-        public IReadOnlyList<MudSelectItemGOP<T>> Items => _items;
+        public IReadOnlyList<MudSelectItemGOP2<T>> Items => _items;
 
-        protected internal List<MudSelectItemGOP<T>> _items = new();
-        protected Dictionary<T, MudSelectItemGOP<T>> _valueLookup = new();
-        protected Dictionary<T, MudSelectItemGOP<T>> _shadowLookup = new();
+        protected internal List<MudSelectItemGOP2<T>> _items = new();
+        protected Dictionary<T, MudSelectItemGOP2<T>> _valueLookup = new();
+        protected Dictionary<T, MudSelectItemGOP2<T>> _shadowLookup = new();
 
         private string _activeItemId;
 
-        internal bool Add(MudSelectItemGOP<T> item)
+        internal bool Add(MudSelectItemGOP2<T> item)
         {
             if (item == null)
                 return false;
@@ -490,7 +490,7 @@ namespace MudBlazor
             return result == true;
         }
 
-        internal void Remove(MudSelectItemGOP<T> item)
+        internal void Remove(MudSelectItemGOP2<T> item)
         {
             _items.Remove(item);
             if (item.Value != null)
@@ -630,7 +630,7 @@ namespace MudBlazor
             HilightItem(item);
         }
 
-        private async void HilightItem(MudSelectItemGOP<T> item)
+        private async void HilightItem(MudSelectItemGOP2<T> item)
         {
             _activeItemId = item?.ItemId;
             // we need to make sure we are just after a render here or else there will be race conditions
@@ -682,12 +682,14 @@ namespace MudBlazor
         }
 
         public async Task OpenMenu()
+
         {
-            if (GetDisabledState() || GetReadOnlyState())
-                return;
+            //if (GetDisabledState() || GetReadOnlyState())
+                //return;
             _open = true;
-            UpdateIcon();
             StateHasChanged();
+            UpdateIcon();
+            
             await HilightSelectedValue();
             //Scroll the active item on each opening
             if (_activeItemId != null)
@@ -742,7 +744,6 @@ namespace MudBlazor
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            
             if (firstRender)
             {
                 _keyInterceptor = KeyInterceptorFactory.Create();
@@ -776,7 +777,7 @@ namespace MudBlazor
         {
             var itemT = select_item.GetType().GenericTypeArguments[0];
             if (itemT != typeof(T))
-                throw new GenericTypeMismatchException("MudSelectGOP", "MudSelectItemGOP", typeof(T), itemT);
+                throw new GenericTypeMismatchException("MudSelect", "MudSelectItem", typeof(T), itemT);
         }
 
         public override ValueTask FocusAsync()
@@ -1030,14 +1031,14 @@ namespace MudBlazor
                 SetValueAsync((T)(object)Text, updateText: false).CatchAndLog();
         }
 
-        public void RegisterShadowItem(MudSelectItemGOP<T> item)
+        public void RegisterShadowItem(MudSelectItemGOP2<T> item)
         {
             if (item == null || item.Value == null)
                 return;
             _shadowLookup[item.Value] = item;
         }
 
-        public void UnregisterShadowItem(MudSelectItemGOP<T> item)
+        public void UnregisterShadowItem(MudSelectItemGOP2<T> item)
         {
             if (item == null || item.Value == null)
                 return;
