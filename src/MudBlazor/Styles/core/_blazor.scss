@@ -1,4 +1,4 @@
-﻿#blazor-error-ui {
+#blazor-error-ui {
   background-color: var(--mud-palette-error);
   color: var(--mud-palette-error-text);
   bottom: 0;
@@ -27,6 +27,7 @@
 #components-reconnect-modal {
   z-index: 9999 !important;
   background-color: var(--mud-palette-background) !important;
+  opacity: 0.8;
 
   h5 {
     font-size: 18px;
