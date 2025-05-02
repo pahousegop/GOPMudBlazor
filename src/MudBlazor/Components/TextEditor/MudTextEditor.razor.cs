@@ -8,6 +8,7 @@ namespace MudBlazor
     public partial class MudTextEditor : MudBaseInput<string>
     {
         [Inject] protected IJSRuntime jsRuntime { get; set; } = default!;
+
         [Parameter]
         public RenderFragment EditorContent { get; set; }
 
@@ -20,6 +21,8 @@ namespace MudBlazor
         [Parameter]
         public RenderFragment ToolbarContent { get; set; }
 
+        [Parameter]
+        public bool ToolbarLimited { get; set; }
         //[Parameter]
         //public bool ReadOnly { get; set; }
         //    = false;
@@ -37,7 +40,7 @@ namespace MudBlazor
         protected string InputClassname =>
            new CssBuilder(
                MudInputCssHelper.GetClassname(this,
-                   () =>  !string.IsNullOrEmpty(Text) || Adornment == Adornment.Start || !string.IsNullOrWhiteSpace(Placeholder) || ShrinkLabel))
+                   () => !string.IsNullOrEmpty(Text) || Adornment == Adornment.Start || !string.IsNullOrWhiteSpace(Placeholder) || ShrinkLabel))
             .Build();
 
 
@@ -86,11 +89,17 @@ namespace MudBlazor
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
-        
+
+        protected override Task OnInitializedAsync()
+        {
+            SetToolbarContent();
+            return Task.CompletedTask;
+        }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
+                
                 await TextEditorInterop.CreateQuill(
                     jsRuntime,
                     QuillElement,
@@ -101,6 +110,18 @@ namespace MudBlazor
                     Theme,
                     Formats,
                     DebugLevel);
+            }
+        }
+
+        private void SetToolbarContent()
+        {
+            if (ToolbarLimited)
+            {
+                SetLimited();
+            }
+            else
+            {
+                SetDefault();
             }
         }
 
@@ -155,6 +176,103 @@ namespace MudBlazor
             var QuillDelta =
                 await TextEditorInterop.EnableQuillEditor(
                     jsRuntime, QuillElement, mode);
+        }
+
+        private void SetLimited()
+        {
+            ToolbarContent = builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "ql-formats");
+
+                builder.OpenElement(2, "button");
+                builder.AddAttribute(3, "class", "ql-bold");
+                builder.CloseElement();
+
+                builder.OpenElement(4, "button");
+                builder.AddAttribute(5, "class", "ql-italic");
+                builder.CloseElement();
+
+                builder.OpenElement(6, "button");
+                builder.AddAttribute(7, "class", "ql-underline");
+                builder.CloseElement();
+
+                builder.OpenElement(8, "button");
+                builder.AddAttribute(9, "class", "ql-strike");
+                builder.CloseElement();
+
+                builder.CloseElement();
+            };
+        }
+
+        private void SetDefault()
+        {
+            ToolbarContent = builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.AddAttribute(1, "class", "ql-formats");
+
+                builder.OpenElement(2, "button");
+                builder.AddAttribute(3, "class", "ql-bold");
+                builder.CloseElement();
+
+                builder.OpenElement(4, "button");
+                builder.AddAttribute(5, "class", "ql-italic");
+                builder.CloseElement();
+
+                builder.OpenElement(6, "button");
+                builder.AddAttribute(7, "class", "ql-underline");
+                builder.CloseElement();
+
+                builder.OpenElement(8, "button");
+                builder.AddAttribute(9, "class", "ql-strike");
+                builder.CloseElement();
+
+                builder.CloseElement();
+
+                builder.OpenElement(10, "span");
+                builder.AddAttribute(11, "class", "ql-formats");
+
+                builder.OpenElement(12, "select");
+                builder.AddAttribute(13, "class", "ql-color");
+                builder.CloseElement();
+
+                builder.OpenElement(14, "select");
+                builder.AddAttribute(15, "class", "ql-background");
+                builder.CloseElement();
+
+                builder.CloseElement();
+
+                builder.OpenElement(16, "span");
+                builder.AddAttribute(17, "class", "ql-formats");
+
+                builder.OpenElement(18, "button");
+                builder.AddAttribute(19, "class", "ql-list");
+                builder.AddAttribute(20, "value", "ordered");
+                builder.CloseElement();
+
+                builder.OpenElement(21, "button");
+                builder.AddAttribute(22, "class", "ql-list");
+                builder.AddAttribute(23, "value", "bullet");
+                builder.CloseElement();
+
+                builder.CloseElement();
+
+                builder.OpenElement(24, "span");
+                builder.AddAttribute(25, "class", "ql-formats");
+
+                builder.OpenElement(26, "button");
+                builder.AddAttribute(27, "class", "ql-indent");
+                builder.AddAttribute(28, "value", "-1");
+                builder.CloseElement();
+
+                builder.OpenElement(29, "button");
+                builder.AddAttribute(30, "class", "ql-indent");
+                builder.AddAttribute(31, "value", "+1");
+                builder.CloseElement();
+
+                builder.CloseElement();
+            };
         }
 
     }
