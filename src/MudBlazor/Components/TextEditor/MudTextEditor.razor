@@ -16,7 +16,7 @@
                     @ToolbarContent
                 </div>
             }
-            <div class="@EditorCssClass" id="@("QuillEditor_" + UniqueID)" @ref="@QuillElement" style="@Style">
+            <div class="@EditorCssClass" id="@("QuillEditor_" + UniqueID)" @ref="@QuillElement" style="@("overflow-y: auto; " + Style)">
                 @EditorContent
             </div>
             @if (BottomToolbar)
