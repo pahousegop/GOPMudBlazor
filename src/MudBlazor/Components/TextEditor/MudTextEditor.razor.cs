@@ -90,7 +90,6 @@ namespace MudBlazor
         private ElementReference QuillElement;
         private ElementReference ToolBar;
 
-
         protected override Task OnInitializedAsync()
         {
             SetToolbarContent();

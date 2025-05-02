@@ -22,7 +22,7 @@
                 options.formats = formats;
             }
 
-            new Quill(quillElement, options);
+            quillElement.__quill = new Quill(quillElement, options);
 
         },
         getQuillContent: function(quillElement) {
@@ -32,7 +32,7 @@
             return quillElement.__quill.getText();
         },
         getQuillHTML: function(quillElement) {
-            return quillElement.root.innerHTML;
+            return quillElement.__quill.root.innerHTML;
         },
         loadQuillContent: function(quillElement, quillContent) {
             content = JSON.parse(quillContent);

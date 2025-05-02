@@ -6,7 +6,7 @@
     <MudTextField T="string" Label="Test"  />
     <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false" Label="Notes" Variant="Variant.Outlined"  BottomToolbar="false">
         @* <ToolbarContent>
-        
+
         <span class="ql-formats">
             <button class="ql-bold"></button>
             <button class="ql-italic"></button>
@@ -31,20 +31,24 @@
         </EditorContent>
     </MudTextEditor>
 </div><br />
- <div>
+<div>
     <MudButton  OnClick="SaveItem" >button</MudButton>
 </div> 
 @code {
+
     //string? MyDate;
     //string  usDate = "";
 
     //IMask mask2 = new DateMask("MM/dd/yyyy");
     [Parameter] public string Content { get; set; } = "test content";
+
+    public string initialValue { get; set; } = "";
     public string textFieldValue { get; set; } = "This is the field";
     public MudTextEditor quill = new();
 
     protected override void OnInitialized()
     {
+        initialValue = Content;
         //MudGlobal.InputDefaults.Variant = Variant.Outlined;
     }
 
