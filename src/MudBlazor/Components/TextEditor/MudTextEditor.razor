@@ -7,12 +7,12 @@
 
 <div @attributes="UserAttributes" class="@Classname" >
     <div class="mud-input-control-input-container">
-       
+
         <div class="@InputClassname" style="display: unset;">
-            
+
             @if (!BottomToolbar)
             {
-                <div class="@ToolbarCSSClass" id="QuillToolBar" @ref="@ToolBar" style="@ToolbarCssStyle">
+                <div class="@ToolbarCSSClass" id="@("QuillToolbar_" + UniqueID)" @ref="@ToolBar" style="@ToolbarCssStyle">
                     @ToolbarContent
                 </div>
             }
@@ -21,7 +21,7 @@
             </div>
             @if (BottomToolbar)
             {
-                <div class="@ToolbarCSSClass" id="QuillToolBar" @ref="@ToolBar" style="@ToolbarCssStyle">
+                <div class="@ToolbarCSSClass" id="@("QuillToolbar_" + UniqueID)" @ref="@ToolBar" style="@ToolbarCssStyle">
                     @ToolbarContent
                 </div>
             }
@@ -29,15 +29,15 @@
                  tabindex="-1" ></div><!--!-->
             @if (Variant == Variant.Outlined)
             {
-                <div class="mud-input-outlined-border"></div>
+                    <div class="mud-input-outlined-border"></div>
             }
         </div><!--!-->
         @if (!string.IsNullOrEmpty(Label))
         {
-            <MudInputLabel Class="mud-input-label-inputcontrol" Variant="@Variant" Disabled=@Disabled Error="@Error"
-                           Margin="@Margin" >
+                <MudInputLabel Class="mud-input-label-inputcontrol" Variant="@Variant" Disabled=@Disabled Error="@Error"
+                               Margin="@Margin" >
                 @Label
-            </MudInputLabel>
+                </MudInputLabel>
         }
         @if (EditButtons != null)
         {
