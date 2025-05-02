@@ -1,7 +1,7 @@
 ﻿(function () {
     window.QuillFunctions = {        
         createQuill: function (
-            quillElement, id, toolBar, readOnly,
+            quillElement, id, readOnly,
             placeholder, theme, formats, debugLevel) {  
 
             //Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
@@ -10,7 +10,7 @@
             var options = {
                 debug: debugLevel,
                 modules: {
-                    toolbar: '#QuillToolBar'
+                    toolbar: '#QuillToolbar_' + id
                 },
                 placeholder: placeholder,
                 readOnly: readOnly,

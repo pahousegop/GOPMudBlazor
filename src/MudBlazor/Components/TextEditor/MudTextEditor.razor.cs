@@ -104,7 +104,6 @@ namespace MudBlazor
                     jsRuntime,
                     QuillElement,
                     UniqueID,
-                    ToolBar,
                     ReadOnly,
                     Placeholder,
                     Theme,
