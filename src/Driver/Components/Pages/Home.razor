@@ -2,8 +2,30 @@
 
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
-    <MudTextEditor @ref="@quill" Theme="bubble" Label="Notes" Variant="Variant.Outlined" Style="width: 400px; height: 400px;">
+
+    <MudTextField T="string" Label="Test"  />
+    <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false" Label="Notes" Variant="Variant.Outlined"  BottomToolbar="false">
+        @* <ToolbarContent>
         
+        <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-indent" value="-1"></button>
+            <button class="ql-indent" value="+1"></button>
+            </span>
+    </ToolbarContent> *@
         <EditorContent>
             <span>@((MarkupString?)Content)</span>
         </EditorContent>

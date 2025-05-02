@@ -4,14 +4,13 @@
             quillElement, id, toolBar, readOnly,
             placeholder, theme, formats, debugLevel) {  
 
-            Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
-            const toolbarOptions = [['bold', 'italic', 'underline', 'strike'],
-                                [{ 'background': ["", "#FCC832"] }]];
+            //Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+            //const toolbarOptions = [['bold', 'italic', 'underline', 'strike'],
+            //                    [{ 'background': ["", "#FCC832"] }]];
             var options = {
                 debug: debugLevel,
                 modules: {
-                    toolbar: toolbarOptions,
-                    blotFormatter: {}
+                    toolbar: '#QuillToolBar'
                 },
                 placeholder: placeholder,
                 readOnly: readOnly,
@@ -24,6 +23,7 @@
             }
 
             new Quill(quillElement, options);
+
         },
         getQuillContent: function(quillElement) {
             return JSON.stringify(quillElement.__quill.getContents());
@@ -32,7 +32,7 @@
             return quillElement.__quill.getText();
         },
         getQuillHTML: function(quillElement) {
-            return quillElement.__quill.root.innerHTML;
+            return quillElement.root.innerHTML;
         },
         loadQuillContent: function(quillElement, quillContent) {
             content = JSON.parse(quillContent);

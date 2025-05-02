@@ -8,7 +8,7 @@
 <div @attributes="UserAttributes" class="@Classname" >
     <div class="mud-input-control-input-container">
        
-        <div class="@InputClassname" style="@Style">
+        <div class="@InputClassname" style="display: unset;">
             
             @if (!BottomToolbar)
             {
@@ -21,7 +21,7 @@
             </div>
             @if (BottomToolbar)
             {
-                <div class="@ToolbarCSSClass" id="QuillBottomToolbar" @ref="@ToolBar" style="@ToolbarCssStyle">
+                <div class="@ToolbarCSSClass" id="QuillToolBar" @ref="@ToolBar" style="@ToolbarCssStyle">
                     @ToolbarContent
                 </div>
             }
