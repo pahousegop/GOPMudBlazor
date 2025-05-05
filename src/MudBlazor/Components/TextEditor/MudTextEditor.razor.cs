@@ -126,20 +126,23 @@ namespace MudBlazor
 
         public async Task<string> GetText()
         {
+            throw new NotImplementedException();
             return await TextEditorInterop.GetText(
                 jsRuntime, QuillElement);
         }
 
         public async Task<string> GetHTML()
         {
+            TextEditorInterop TextEditorInterop = new TextEditorInterop();
             return await TextEditorInterop.GetHTML(
                 jsRuntime, QuillElement);
         }
 
         public async Task<string> GetContent()
         {
-            return await TextEditorInterop.GetContent(
-                jsRuntime, QuillElement);
+            throw new NotImplementedException();
+            //return await TextEditorInterop.GetContent(
+            //    jsRuntime, QuillElement);
         }
 
         public async Task LoadContent(string Content)

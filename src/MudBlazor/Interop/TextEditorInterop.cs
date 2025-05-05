@@ -12,9 +12,10 @@ using Microsoft.JSInterop;
 
 namespace MudBlazor.Interop
 {
-    public static class TextEditorInterop
+    public class TextEditorInterop
     {
-        
+
+
         internal static ValueTask<object> CreateQuill(
             IJSRuntime jsRuntime,
             ElementReference quillElement,
@@ -40,13 +41,38 @@ namespace MudBlazor.Interop
                 quillElement);
         }
 
-        internal static ValueTask<string> GetHTML(
-            IJSRuntime jsRuntime,
-            ElementReference quillElement)
+        //internal static ValueTask<string> GetHTML(
+        //    IJSRuntime jsRuntime,
+        //    ElementReference quillElement)
+        //{
+        //    return jsRuntime.InvokeAsync<string>(
+        //        "QuillFunctions.getQuillHTML",
+        //        quillElement);
+        //}
+
+        internal async Task<string> GetHTML(IJSRuntime jsRuntime, ElementReference quillElement)
         {
-            return jsRuntime.InvokeAsync<string>(
-                "QuillFunctions.getQuillHTML",
-                quillElement);
+            bool isReceiving =  true;
+
+            int chunkSize = 20000; // Adjust for efficiency
+            int i = 0;
+            StringBuilder builingHTML = new();
+            int n = 0;
+            while(isReceiving && n < 50)
+            {
+                string receivedChunk = await jsRuntime.InvokeAsync<string>("QuillFunctions.getQuillHTMLChunk", quillElement, i, chunkSize);
+
+                builingHTML.Append(receivedChunk);
+                if (receivedChunk.Length < chunkSize)
+                {
+                    isReceiving = false;
+                   
+                }
+                i += chunkSize;
+                n++;
+            }
+
+            return builingHTML.ToString();
         }
 
         internal static ValueTask<string> GetContent(

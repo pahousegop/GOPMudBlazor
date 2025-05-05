@@ -31,6 +31,11 @@
         getQuillText: function(quillElement) {
             return quillElement.__quill.getText();
         },
+        getQuillHTMLChunk: function (quillElement, i, chunkSize) {
+            let htmlContent = quillElement.__quill.root.innerHTML;
+           
+            return htmlContent.substring(i, i + chunkSize); // Returns an array of HTML chunks
+        },
         getQuillHTML: function(quillElement) {
             return quillElement.__quill.root.innerHTML;
         },
