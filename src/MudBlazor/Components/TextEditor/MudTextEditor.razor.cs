@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Interop;
 using MudBlazor.Utilities;
@@ -19,10 +20,23 @@ namespace MudBlazor
         public string UniqueID { get; set; }
 
         [Parameter]
-        public RenderFragment ToolbarContent { get; set; }
+        public RenderFragment ExtraToolbarContent { get; set; }
 
+        public RenderFragment DefaultToolbarContent { get; set; }
+        private RenderFragment ToolbarContent => builder =>
+        {
+            if (!HideDefaultToolbar)
+                DefaultToolbarContent(builder); // Render the default toolbar
+            
+            if(ExtraToolbarContent != null)
+                ExtraToolbarContent(builder); // Append extra toolbar items
+        };
         [Parameter]
         public bool ToolbarLimited { get; set; }
+
+        [Parameter]
+        public bool HideDefaultToolbar { get; set; } = false;
+
         //[Parameter]
         //public bool ReadOnly { get; set; }
         //    = false;
@@ -114,14 +128,18 @@ namespace MudBlazor
 
         private void SetToolbarContent()
         {
-            if (ToolbarLimited)
+            if (!HideDefaultToolbar)
             {
-                SetLimited();
+                if (ToolbarLimited)
+                {
+                    SetLimited();
+                }
+                else
+                {
+                    SetDefault();
+                }
             }
-            else
-            {
-                SetDefault();
-            }
+            
         }
 
         public async Task<string> GetText()
@@ -182,7 +200,7 @@ namespace MudBlazor
 
         private void SetLimited()
         {
-            ToolbarContent = builder =>
+            DefaultToolbarContent = builder =>
             {
                 builder.OpenElement(0, "span");
                 builder.AddAttribute(1, "class", "ql-formats");
@@ -209,73 +227,97 @@ namespace MudBlazor
 
         private void SetDefault()
         {
-            ToolbarContent = builder =>
+            DefaultToolbarContent = builder =>
             {
                 builder.OpenElement(0, "span");
-                builder.AddAttribute(1, "class", "ql-formats");
+                    builder.AddAttribute(1, "class", "ql-formats");
 
-                builder.OpenElement(2, "button");
-                builder.AddAttribute(3, "class", "ql-bold");
-                builder.CloseElement();
+                    builder.OpenElement(2, "button");
+                    builder.AddAttribute(3, "class", "ql-bold");
+                    builder.CloseElement();
 
-                builder.OpenElement(4, "button");
-                builder.AddAttribute(5, "class", "ql-italic");
-                builder.CloseElement();
+                    builder.OpenElement(4, "button");
+                    builder.AddAttribute(5, "class", "ql-italic");
+                    builder.CloseElement();
 
-                builder.OpenElement(6, "button");
-                builder.AddAttribute(7, "class", "ql-underline");
-                builder.CloseElement();
+                    builder.OpenElement(6, "button");
+                    builder.AddAttribute(7, "class", "ql-underline");
+                    builder.CloseElement();
 
-                builder.OpenElement(8, "button");
-                builder.AddAttribute(9, "class", "ql-strike");
-                builder.CloseElement();
+                    builder.OpenElement(8, "button");
+                    builder.AddAttribute(9, "class", "ql-strike");
+                    builder.CloseElement();
 
                 builder.CloseElement();
 
                 builder.OpenElement(10, "span");
-                builder.AddAttribute(11, "class", "ql-formats");
+                    builder.AddAttribute(11, "class", "ql-formats");
 
-                builder.OpenElement(12, "select");
-                builder.AddAttribute(13, "class", "ql-color");
-                builder.CloseElement();
+                    builder.OpenElement(12, "select");
+                    builder.AddAttribute(13, "class", "ql-color");
+                    builder.CloseElement();
 
-                builder.OpenElement(14, "select");
-                builder.AddAttribute(15, "class", "ql-background");
-                builder.CloseElement();
+                    builder.OpenElement(14, "select");
+                    builder.AddAttribute(15, "class", "ql-background");
+                    builder.CloseElement();
 
                 builder.CloseElement();
 
                 builder.OpenElement(16, "span");
-                builder.AddAttribute(17, "class", "ql-formats");
+                    builder.AddAttribute(17, "class", "ql-formats");
 
-                builder.OpenElement(18, "button");
-                builder.AddAttribute(19, "class", "ql-list");
-                builder.AddAttribute(20, "value", "ordered");
-                builder.CloseElement();
+                    builder.OpenElement(18, "button");
+                    builder.AddAttribute(19, "class", "ql-list");
+                    builder.AddAttribute(20, "value", "ordered");
+                    builder.CloseElement();
 
-                builder.OpenElement(21, "button");
-                builder.AddAttribute(22, "class", "ql-list");
-                builder.AddAttribute(23, "value", "bullet");
-                builder.CloseElement();
+                    builder.OpenElement(21, "button");
+                    builder.AddAttribute(22, "class", "ql-list");
+                    builder.AddAttribute(23, "value", "bullet");
+                    builder.CloseElement();
 
                 builder.CloseElement();
 
                 builder.OpenElement(24, "span");
-                builder.AddAttribute(25, "class", "ql-formats");
+                    builder.AddAttribute(25, "class", "ql-formats");
 
-                builder.OpenElement(26, "button");
-                builder.AddAttribute(27, "class", "ql-indent");
-                builder.AddAttribute(28, "value", "-1");
+                    builder.OpenElement(26, "button");
+                    builder.AddAttribute(27, "class", "ql-indent");
+                    builder.AddAttribute(28, "value", "-1");
+                    builder.CloseElement();
+
+                    builder.OpenElement(29, "button");
+                    builder.AddAttribute(30, "class", "ql-indent");
+                    builder.AddAttribute(31, "value", "+1");
+                    builder.CloseElement();
+
                 builder.CloseElement();
 
-                builder.OpenElement(29, "button");
-                builder.AddAttribute(30, "class", "ql-indent");
-                builder.AddAttribute(31, "value", "+1");
-                builder.CloseElement();
+                builder.OpenElement(32, "span");
+                    builder.AddAttribute(33, "class", "ql-formats");
 
+                    builder.OpenElement(34, "button");
+                    builder.AddAttribute(35, "class", "ql-align");
+                    builder.AddAttribute(36, "value", "");
+                    builder.CloseElement();
+
+                    builder.OpenElement(37, "button");
+                    builder.AddAttribute(38, "class", "ql-align");
+                    builder.AddAttribute(39, "value", "center");
+                    builder.CloseElement();
+
+                    builder.OpenElement(40, "button");
+                    builder.AddAttribute(41, "class", "ql-align");
+                    builder.AddAttribute(42, "value", "right");
+                    builder.CloseElement();
+
+                    builder.OpenElement(43, "button");
+                    builder.AddAttribute(44, "class", "ql-align");
+                    builder.AddAttribute(45, "value", "justify");
+                    builder.CloseElement();
                 builder.CloseElement();
             };
         }
-
+        
     }
 }

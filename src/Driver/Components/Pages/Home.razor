@@ -4,7 +4,8 @@
 <div style="display:block;">
 
 
-    <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false" Label="Notes" UniqueID="first" Variant="Variant.Outlined"  BottomToolbar="false" Style="max-height: 400px;">
+    <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false"  Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;">
+        
         <EditorContent>
             <span>@((MarkupString?)Content)</span>
         </EditorContent>
