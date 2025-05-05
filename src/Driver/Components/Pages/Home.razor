@@ -3,7 +3,6 @@
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
 
-    <MudTextField T="string" Label="Test"  />
 
     <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false" Label="Notes" UniqueID="first" Variant="Variant.Outlined"  BottomToolbar="false" Style="max-height: 400px;">
         <EditorContent>
@@ -11,12 +10,11 @@
         </EditorContent>
     </MudTextEditor>
 
-    <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false" Label="Notes" UniqueID="second" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;">
-
         <EditorContent>
-            <span>@((MarkupString?)Content)</span>
+            <span>@((MarkupString?)Content)</span> 
         </EditorContent>
     </MudTextEditor>
+
 </div><br />
 <div>
     <MudButton  OnClick="SaveItem" >button</MudButton>
