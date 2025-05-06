@@ -24,12 +24,13 @@ namespace MudBlazor.Interop
             string placeholder,
             string theme,
             string[] formats,
-            string debugLevel)
+            string debugLevel,
+            DotNetObjectReference<MudTextEditor> dotNetObjectReference)
         {
             return jsRuntime.InvokeAsync<object>(
                 "QuillFunctions.createQuill",
                 quillElement, Id, readOnly,
-                placeholder, theme, formats, debugLevel);
+                placeholder, theme, formats, debugLevel, dotNetObjectReference);
         }
 
         internal static ValueTask<string> GetText(
@@ -133,6 +134,11 @@ namespace MudBlazor.Interop
                 "QuillFunctions.insertQuillText",
                 quillElement, text);
         }
+
+        //internal static async Task CreateQuill(IJSRuntime jsRuntime, ElementReference quillElement, string uniqueID, bool readOnly, string placeholder, string theme, string[] formats, string debugLevel, DotNetObjectReference<MudTextEditor> dotNetObjectReference)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
 

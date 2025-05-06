@@ -4,12 +4,9 @@
 <div style="display:block;">
 
 
-    <MudTextEditor @ref="@quill" Theme="snow" ToolbarLimited="false"  Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;">
-        
-        <EditorContent>
-            <span>@((MarkupString?)Content)</span>
-        </EditorContent>
-    </MudTextEditor>
+    <MudTextEditor @ref="@quill" Theme="snow" @bind-Value="Content" ToolbarLimited="false"  Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+    <MudTextEditor @ref="@quill" Theme="snow" @bind-Value="Content2" ToolbarLimited="false" Label="Notes" UniqueID="second" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+
 
 </div><br />
 <div>
@@ -17,11 +14,18 @@
 </div> 
 @code {
 
+
+
+
+
+
+
     //string? MyDate;
     //string  usDate = "";
 
     //IMask mask2 = new DateMask("MM/dd/yyyy");
-    [Parameter] public string Content { get; set; } = "test content";
+    [Parameter] public string Content { get; set; } = "test content 1";
+    [Parameter] public string Content2 { get; set; } = "test content 2";
 
     public string initialValue { get; set; } = "";
     public string textFieldValue { get; set; } = "This is the field";
@@ -33,9 +37,14 @@
         //MudGlobal.InputDefaults.Variant = Variant.Outlined;
     }
 
-    private async void SaveItem()
+    private void SaveItem()
     {
-        var t = await quill.GetHTML();
+
+        //var t = await quill.GetHTML();
+
+        var z = Content;
+
+        var x = Content2;
     }
 }
 

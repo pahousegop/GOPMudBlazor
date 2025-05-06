@@ -3,8 +3,6 @@
 @using Microsoft.JSInterop;
 @using MudBlazor.Interop
 
-
-
 <div @attributes="UserAttributes" class="@Classname" >
     <div class="mud-input-control-input-container">
 
@@ -17,7 +15,7 @@
                 </div>
             }
             <div class="@EditorCssClass" id="@("QuillEditor_" + UniqueID)" @ref="@QuillElement" style="@("overflow-y: auto; " + Style)">
-                @EditorContent
+                <span>@((MarkupString)@Value)</span>
             </div>
             @if (BottomToolbar)
             {
