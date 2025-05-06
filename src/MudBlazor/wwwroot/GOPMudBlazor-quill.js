@@ -2,7 +2,7 @@
     window.QuillFunctions = {        
         createQuill: function (
             quillElement, id, readOnly,
-            placeholder, theme, formats, debugLevel) {  
+            placeholder, theme, formats, debugLevel, dotNetRef) {  
 
             //Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
             //const toolbarOptions = [['bold', 'italic', 'underline', 'strike'],
@@ -23,6 +23,10 @@
             }
 
             quillElement.__quill = new Quill(quillElement, options);
+
+            quillElement.__quill.on("text-change", function () {
+                dotNetRef.invokeMethodAsync("HandleContentChange");
+            });
 
         },
         getQuillContent: function(quillElement) {

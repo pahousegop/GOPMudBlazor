@@ -2,16 +2,34 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Interop;
+using MudBlazor.State;
 using MudBlazor.Utilities;
+
 
 namespace MudBlazor
 {
     public partial class MudTextEditor : MudBaseInput<string>
     {
+        private Timer debounceTimer;
+        [JSInvokable]
+        public async Task HandleContentChange()
+        {
+            debounceTimer?.Dispose(); // Dispose any previous timer
+            debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
+        }
+
+        private async Task SetValueFromHTML()
+        {
+            TextEditorInterop TextEditorInterop = new TextEditorInterop();
+            Value = await TextEditorInterop.GetHTML(
+                jsRuntime, QuillElement);
+            await ValueChanged.InvokeAsync(Value);
+        }
+
         [Inject] protected IJSRuntime jsRuntime { get; set; } = default!;
 
-        [Parameter]
-        public RenderFragment EditorContent { get; set; }
+        //[Parameter]
+        //public RenderFragment EditorContent { get; set; }
 
         [Parameter]
         public RenderFragment EditButtons { get; set; }
@@ -122,7 +140,10 @@ namespace MudBlazor
                     Placeholder,
                     Theme,
                     Formats,
-                    DebugLevel);
+                    DebugLevel,
+                    DotNetObjectReference.Create(this));
+
+                
             }
         }
 
