@@ -51,15 +51,16 @@ namespace MudBlazor.Interop
         //        quillElement);
         //}
 
+       
         internal async Task<string> GetHTML(IJSRuntime jsRuntime, ElementReference quillElement)
         {
-            bool isReceiving =  true;
+            bool isReceiving = true;
 
             int chunkSize = 20000; // Adjust for efficiency
             int i = 0;
             StringBuilder builingHTML = new();
             int n = 0;
-            while(isReceiving && n < 50)
+            while (isReceiving && n < 50)
             {
                 string receivedChunk = await jsRuntime.InvokeAsync<string>("QuillFunctions.getQuillHTMLChunk", quillElement, i, chunkSize);
 
@@ -67,13 +68,38 @@ namespace MudBlazor.Interop
                 if (receivedChunk.Length < chunkSize)
                 {
                     isReceiving = false;
-                   
+
                 }
                 i += chunkSize;
                 n++;
             }
 
             return builingHTML.ToString();
+        }
+
+        internal async Task<string> GetContentChunkStyle(IJSRuntime jsRuntime, ElementReference quillElement)
+        {
+            bool isReceiving = true;
+
+            int chunkSize = 20000; // Adjust for efficiency
+            int i = 0;
+            StringBuilder builingContent = new();
+            int n = 0;
+            while (isReceiving && n < 50)
+            {
+                string receivedChunk = await jsRuntime.InvokeAsync<string>("QuillFunctions.getQuillContentChunk", quillElement, i, chunkSize);
+
+                builingContent.Append(receivedChunk);
+                if (receivedChunk.Length < chunkSize)
+                {
+                    isReceiving = false;
+
+                }
+                i += chunkSize;
+                n++;
+            }
+
+            return builingContent.ToString();
         }
 
         internal static ValueTask<string> GetContent(

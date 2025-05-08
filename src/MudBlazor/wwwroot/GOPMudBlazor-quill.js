@@ -29,6 +29,11 @@
             });
 
         },
+        getQuillContentChunk: function (quillElement, i, chunkSize) {
+            let content = JSON.stringify(quillElement.__quill.getContents());
+
+            return content.substring(i, i + chunkSize); // Returns an array of HTML chunks
+        },
         getQuillContent: function(quillElement) {
             return JSON.stringify(quillElement.__quill.getContents());
         },

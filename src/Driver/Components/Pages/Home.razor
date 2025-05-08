@@ -1,12 +1,16 @@
 ﻿@page "/"
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using QuillConverter
+@using System.Text.Json
 
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
 
 
-    <MudTextEditor @ref="@quill" Theme="snow" @bind-Value="Content" ToolbarLimited="false"  Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
-    <MudTextEditor @ref="@quill" Theme="snow" @bind-Value="Content2" ToolbarLimited="false" Label="Notes" UniqueID="second" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+    <MudTextEditor @ref="@quill" @bind-Value="Content" Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
+    <div class="ql-editor display-only" style="width: 100%;"><span>@((MarkupString)@quillHtml)</span></div>
 
 </div><br />
 <div>
@@ -18,13 +22,14 @@
 
 
 
-
-
+    string quillHtml = "";
     //string? MyDate;
     //string  usDate = "";
 
     //IMask mask2 = new DateMask("MM/dd/yyyy");
-    [Parameter] public string Content { get; set; } = "test content 1";
+    [Parameter] public string Content { get; set; } = @"{""ops"":[{""attributes"":{""bold"":true},""insert"":""Header ""},{""insert"":""-""},{""attributes"":{""italic"":true},""insert"":"" (member)""},{""attributes"":{""align"":""center""},""insert"":""\n""},{""insert"":""Header 2""},{""attributes"":{""indent"":2},""insert"":""\n""},{""insert"":""test content 1""},{""attributes"":{""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 2""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 3""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 4""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 5""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 6""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 7""},{""attributes"":{""list"":""bullet""},""insert"":""\n""}]}";
+    //[Parameter] public string Content { get; set; } = "Test Content";
+
     [Parameter] public string Content2 { get; set; } = "test content 2";
 
     public string initialValue { get; set; } = "";
@@ -34,15 +39,31 @@
     protected override void OnInitialized()
     {
         initialValue = Content;
+
+        // JObject jsonObject = JObject.Parse(Content);
+        
+        // var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
+        // quillHtml = htmlConverter.Convert();
+
+        // var s = "";
+        //var htmlConverter = new HtmlConverter(Content);
+        //string html = htmlConverter.Convert();
         //MudGlobal.InputDefaults.Variant = Variant.Outlined;
     }
 
-    private void SaveItem()
+    private async Task SaveItem()
     {
 
-        //var t = await quill.GetHTML();
-
         var z = Content;
+
+        var d1 = await quill.GetContent();
+        
+        JObject jsonObject = JObject.Parse(d1);
+        var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
+        quillHtml = htmlConverter.Convert();
+        
+        var h = await quill.GetHTML();
+        
 
         var x = Content2;
     }
