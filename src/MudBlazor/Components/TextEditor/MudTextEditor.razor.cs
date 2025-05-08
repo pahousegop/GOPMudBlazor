@@ -23,7 +23,7 @@ namespace MudBlazor
         public string UniqueID { get; set; }
 
         [Parameter]
-        public bool IsValueHTML { get; set; } = false;
+        public bool OuptDelta { get; set; } = true;
 
         [Parameter]
         public RenderFragment ExtraToolbarContent { get; set; }
@@ -100,15 +100,12 @@ namespace MudBlazor
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
-        
+        private bool IsValueHTML;
         #endregion
 
         protected override Task OnInitializedAsync()
         {
-            if (!string.IsNullOrEmpty(Value))
-            {
-                IsValueHTML = !Value.ToLower().Contains("\"ops\"");
-            }
+            IsValueHTML = !Value.ToLower().Contains("\"ops\"");
 
             SetToolbarContent();
             return Task.CompletedTask;
@@ -151,13 +148,13 @@ namespace MudBlazor
         public async Task HandleContentChange()
         {
             debounceTimer?.Dispose(); // Dispose any previous timer
-            if (IsValueHTML)
+            if (OuptDelta)
             {
-                debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
+                debounceTimer = new Timer(_ => SetValueFromContent(), null, 750, Timeout.Infinite);
             }
             else
             {
-                debounceTimer = new Timer(_ => SetValueFromContent(), null, 750, Timeout.Infinite);
+                debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
             }
 
         }

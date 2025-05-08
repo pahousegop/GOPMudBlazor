@@ -7,7 +7,7 @@
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
 
-    <MudTextEditor @ref="@quill" @bind-Value="Content" Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+    <MudTextEditor @ref="@quill" @bind-Value="Content" OutpuDelta="true" Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
     <div class="ql-editor display-only" style="width: 100%;"><span>@((MarkupString)@quillHtml)</span></div>
   
@@ -29,8 +29,8 @@
 
     //IMask mask2 = new DateMask("MM/dd/yyyy");
 
-    [Parameter] public string Content { get; set; } = @"{""ops"":[{""attributes"":{""bold"":true},""insert"":""Header ""},{""insert"":""-""},{""attributes"":{""italic"":true},""insert"":"" (member)""},{""attributes"":{""align"":""center""},""insert"":""\n""},{""insert"":""Header 2""},{""attributes"":{""indent"":2},""insert"":""\n""},{""insert"":""test content 1""},{""attributes"":{""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 2""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 3""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 4""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 5""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 6""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 7""},{""attributes"":{""list"":""bullet""},""insert"":""\n""}]}";
-    //[Parameter] public string Content { get; set; } = "Test Content";
+    //[Parameter] public string Content { get; set; } = @"{""ops"":[{""attributes"":{""bold"":true},""insert"":""Header ""},{""insert"":""-""},{""attributes"":{""italic"":true},""insert"":"" (member)""},{""attributes"":{""align"":""center""},""insert"":""\n""},{""insert"":""Header 2""},{""attributes"":{""indent"":2},""insert"":""\n""},{""insert"":""test content 1""},{""attributes"":{""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 2""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 3""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 4""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 5""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 6""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 7""},{""attributes"":{""list"":""bullet""},""insert"":""\n""}]}";
+    [Parameter] public string Content { get; set; } = "Test Content";
 
 
     [Parameter] public string Content2 { get; set; } = "test content 2";
