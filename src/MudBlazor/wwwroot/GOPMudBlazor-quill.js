@@ -27,7 +27,6 @@
             quillElement.__quill.on("text-change", function () {
                 dotNetRef.invokeMethodAsync("HandleContentChange");
             });
-
         },
         getQuillContentChunk: function (quillElement, i, chunkSize) {
             let content = JSON.stringify(quillElement.__quill.getContents());
