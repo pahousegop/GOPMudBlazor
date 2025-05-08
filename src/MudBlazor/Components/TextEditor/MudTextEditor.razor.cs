@@ -23,6 +23,9 @@ namespace MudBlazor
         public string UniqueID { get; set; }
 
         [Parameter]
+        public bool IsValueHTML { get; set; } = false;
+
+        [Parameter]
         public RenderFragment ExtraToolbarContent { get; set; }
 
         public RenderFragment DefaultToolbarContent { get; set; }
@@ -97,12 +100,15 @@ namespace MudBlazor
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
-        private bool IsValueHTML;
+        
         #endregion
 
         protected override Task OnInitializedAsync()
         {
-            IsValueHTML = !Value.ToLower().Contains("\"ops\"");
+            if (!string.IsNullOrEmpty(Value))
+            {
+                IsValueHTML = !Value.ToLower().Contains("\"ops\"");
+            }
 
             SetToolbarContent();
             return Task.CompletedTask;
