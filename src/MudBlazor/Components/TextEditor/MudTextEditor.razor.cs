@@ -10,26 +10,11 @@ namespace MudBlazor
 {
     public partial class MudTextEditor : MudBaseInput<string>
     {
+        #region "Parameters"
+
         private Timer debounceTimer;
-        [JSInvokable]
-        public async Task HandleContentChange()
-        {
-            debounceTimer?.Dispose(); // Dispose any previous timer
-            debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
-        }
-
-        private async Task SetValueFromHTML()
-        {
-            TextEditorInterop TextEditorInterop = new TextEditorInterop();
-            Value = await TextEditorInterop.GetHTML(
-                jsRuntime, QuillElement);
-            await ValueChanged.InvokeAsync(Value);
-        }
-
+        
         [Inject] protected IJSRuntime jsRuntime { get; set; } = default!;
-
-        //[Parameter]
-        //public RenderFragment EditorContent { get; set; }
 
         [Parameter]
         public RenderFragment EditButtons { get; set; }
@@ -50,18 +35,10 @@ namespace MudBlazor
                 ExtraToolbarContent(builder); // Append extra toolbar items
         };
         [Parameter]
-        public bool ToolbarLimited { get; set; }
+        public bool ToolbarLimited { get; set; } = false;
 
         [Parameter]
         public bool HideDefaultToolbar { get; set; } = false;
-
-        //[Parameter]
-        //public bool ReadOnly { get; set; }
-        //    = false;
-
-        //[Parameter]
-        //public string Placeholder { get; set; }
-        //    = "Compose an epic...";
 
         protected string Classname =>
            new CssBuilder("mud-input-control mud-input-input-control")
@@ -74,7 +51,6 @@ namespace MudBlazor
                MudInputCssHelper.GetClassname(this,
                    () => !string.IsNullOrEmpty(Text) || Adornment == Adornment.Start || !string.IsNullOrWhiteSpace(Placeholder) || ShrinkLabel))
             .Build();
-
 
         [Parameter]
         public string Theme { get; set; }
@@ -121,9 +97,13 @@ namespace MudBlazor
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
+        private bool IsValueHTML;
+        #endregion
 
         protected override Task OnInitializedAsync()
         {
+            IsValueHTML = !Value.ToLower().Contains("\"ops\"");
+
             SetToolbarContent();
             return Task.CompletedTask;
         }
@@ -143,8 +123,53 @@ namespace MudBlazor
                     DebugLevel,
                     DotNetObjectReference.Create(this));
 
+                if (IsValueHTML)
+                {
+                    await TextEditorInterop.LoadQuillHTMLContent(
+                    jsRuntime,
+                    QuillElement,
+                    Value);                  
+                }
+                else
+                {
+                    await TextEditorInterop.LoadQuillContent(
+                    jsRuntime,
+                    QuillElement,
+                    Value);
+                }
                 
             }
+        }
+
+        [JSInvokable]
+        public async Task HandleContentChange()
+        {
+            debounceTimer?.Dispose(); // Dispose any previous timer
+            if (IsValueHTML)
+            {
+                debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
+            }
+            else
+            {
+                debounceTimer = new Timer(_ => SetValueFromContent(), null, 750, Timeout.Infinite);
+            }
+
+        }
+
+        private async Task SetValueFromHTML()
+        {
+            TextEditorInterop TextEditorInterop = new TextEditorInterop();
+            Value = await TextEditorInterop.GetHTML(
+                jsRuntime, QuillElement);
+            await ValueChanged.InvokeAsync(Value);
+        }
+
+        private async Task SetValueFromContent()
+        {
+            TextEditorInterop TextEditorInterop = new TextEditorInterop();
+            Value = await TextEditorInterop.GetContentChunkStyle(
+                jsRuntime, QuillElement);
+            await ValueChanged.InvokeAsync(Value);
         }
 
         private void SetToolbarContent()
@@ -163,12 +188,12 @@ namespace MudBlazor
             
         }
 
-        public async Task<string> GetText()
-        {
-            throw new NotImplementedException();
-            return await TextEditorInterop.GetText(
-                jsRuntime, QuillElement);
-        }
+        //public async Task<string> GetText()
+        //{
+        //    //throw new NotImplementedException();
+        //    return await TextEditorInterop.GetText(
+        //        jsRuntime, QuillElement);
+        //}
 
         public async Task<string> GetHTML()
         {
@@ -179,45 +204,45 @@ namespace MudBlazor
 
         public async Task<string> GetContent()
         {
-            throw new NotImplementedException();
-            //return await TextEditorInterop.GetContent(
-            //    jsRuntime, QuillElement);
+            //throw new NotImplementedException();
+            return await TextEditorInterop.GetContent(
+                jsRuntime, QuillElement);
         }
 
-        public async Task LoadContent(string Content)
-        {
-            var QuillDelta =
-                await TextEditorInterop.LoadQuillContent(
-                    jsRuntime, QuillElement, Content);
-        }
+        //public async Task LoadContent(string Content)
+        //{
+        //    var QuillDelta =
+        //        await TextEditorInterop.LoadQuillContent(
+        //            jsRuntime, QuillElement, Content);
+        //}
 
-        public async Task LoadHTMLContent(string quillHTMLContent)
-        {
-            var QuillDelta =
-                await TextEditorInterop.LoadQuillHTMLContent(
-                    jsRuntime, QuillElement, quillHTMLContent);
-        }
+        //public async Task LoadHTMLContent(string quillHTMLContent)
+        //{
+        //    var QuillDelta =
+        //        await TextEditorInterop.LoadQuillHTMLContent(
+        //            jsRuntime, QuillElement, quillHTMLContent);
+        //}
 
-        public async Task InsertImage(string ImageURL)
-        {
-            var QuillDelta =
-                await TextEditorInterop.InsertQuillImage(
-                    jsRuntime, QuillElement, ImageURL);
-        }
+        //public async Task InsertImage(string ImageURL)
+        //{
+        //    var QuillDelta =
+        //        await TextEditorInterop.InsertQuillImage(
+        //            jsRuntime, QuillElement, ImageURL);
+        //}
 
-        public async Task InsertText(string text)
-        {
-            var QuillDelta =
-                await TextEditorInterop.InsertQuillText(
-                    jsRuntime, QuillElement, text);
-        }
+        //public async Task InsertText(string text)
+        //{
+        //    var QuillDelta =
+        //        await TextEditorInterop.InsertQuillText(
+        //            jsRuntime, QuillElement, text);
+        //}
 
-        public async Task EnableEditor(bool mode)
-        {
-            var QuillDelta =
-                await TextEditorInterop.EnableQuillEditor(
-                    jsRuntime, QuillElement, mode);
-        }
+        //public async Task EnableEditor(bool mode)
+        //{
+        //    var QuillDelta =
+        //        await TextEditorInterop.EnableQuillEditor(
+        //            jsRuntime, QuillElement, mode);
+        //}
 
         private void SetLimited()
         {
