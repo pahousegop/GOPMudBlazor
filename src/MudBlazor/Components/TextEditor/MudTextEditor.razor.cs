@@ -131,14 +131,14 @@ namespace MudBlazor
                     await TextEditorInterop.LoadQuillHTMLContent(
                     jsRuntime,
                     QuillElement,
-                    Value.Replace("&amp;", "&"));
+                    Value);
                 }
                 else
                 {
                     await TextEditorInterop.LoadQuillContent(
                     jsRuntime,
                     QuillElement,
-                    Value);
+                    Value.Replace("&amp;", "&"));
                 }
                 
             }
