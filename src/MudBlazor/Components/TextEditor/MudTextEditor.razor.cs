@@ -96,7 +96,7 @@ namespace MudBlazor
             = string.Empty;
 
         [Parameter]
-        public bool BottomToolbar { get; set; }
+        public bool BottomToolbar { get; set; } = false;
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
