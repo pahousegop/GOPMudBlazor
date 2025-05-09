@@ -131,7 +131,7 @@ namespace MudBlazor
                     await TextEditorInterop.LoadQuillHTMLContent(
                     jsRuntime,
                     QuillElement,
-                    Value);                  
+                    Value.Replace("&amp;", "&"));
                 }
                 else
                 {
@@ -172,6 +172,7 @@ namespace MudBlazor
             TextEditorInterop TextEditorInterop = new TextEditorInterop();
             Value = await TextEditorInterop.GetContentChunkStyle(
                 jsRuntime, QuillElement);
+            Value = Value.Replace("&", "&amp;");
             await ValueChanged.InvokeAsync(Value);
         }
 
