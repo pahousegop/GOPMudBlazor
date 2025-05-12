@@ -131,14 +131,14 @@ namespace MudBlazor
                     await TextEditorInterop.LoadQuillHTMLContent(
                     jsRuntime,
                     QuillElement,
-                    Value.Replace("&amp;", "&"));
+                    Value.Replace("[%26]", "&"));
                 }
                 else
                 {
                     await TextEditorInterop.LoadQuillContent(
                     jsRuntime,
                     QuillElement,
-                    Value.Replace("&amp;", "&"));
+                    Value.Replace("[%26]", "&"));
                 }
                 
             }
@@ -164,7 +164,7 @@ namespace MudBlazor
             TextEditorInterop TextEditorInterop = new TextEditorInterop();
             Value = await TextEditorInterop.GetHTML(
                 jsRuntime, QuillElement);
-            Value = Value.Replace("&", "&amp;");
+            Value = Value.Replace("&", "[%26]");
             await ValueChanged.InvokeAsync(Value);
         }
 
@@ -173,7 +173,7 @@ namespace MudBlazor
             TextEditorInterop TextEditorInterop = new TextEditorInterop();
             Value = await TextEditorInterop.GetContentChunkStyle(
                 jsRuntime, QuillElement);
-            Value = Value.Replace("&", "&amp;");
+            Value = Value.Replace("&", "[%26]");
             await ValueChanged.InvokeAsync(Value);
         }
 
