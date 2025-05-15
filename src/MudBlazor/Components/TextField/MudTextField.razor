@@ -63,7 +63,7 @@
                               KeyDownPreventDefault="KeyDownPreventDefault"
                               KeyUpPreventDefault="KeyUpPreventDefault"
                               HideSpinButtons="true"
-                              Clearable="@Clearable"
+                              Clearable="@ShowClearButton()"
                               ClearIcon="@ClearIcon"
                               OnClearButtonClick="@OnClearButtonClick"
                               Pattern="@Pattern"
@@ -104,9 +104,10 @@
                              HelperText="@HelperText"
                              Immediate="@Immediate"
                              Margin="@Margin" OnBlur="@OnBlurredAsync"
-                             Clearable="@Clearable"
+                             Clearable="@ShowClearButton()"
                              ClearIcon="@ClearIcon"
                              OnClearButtonClick="@OnClearButtonClick"
+                             ShrinkLabel="@ShrinkLabel"
                              InputId="@InputElementId"
                              Required="@Required" />
                 }

@@ -62,7 +62,6 @@ public partial class SectionContent
     [Parameter] public string HighLight { get; set; }
     [Parameter] public IEnumerable<CodeFile> Codes { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
-
     [Parameter] public bool IsApiSection { get; set; }
 
     private bool _hasCode;
@@ -120,6 +119,9 @@ public partial class SectionContent
             using (var reader = new StreamReader(stream))
             {
                 var read = reader.ReadToEnd();
+
+                // Ensure the code uses spaces for identation regardless of the formatting within the source code.
+                read = read.Replace("\t", "    ");
 
                 if (!string.IsNullOrEmpty(HighLight))
                 {

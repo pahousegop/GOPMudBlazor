@@ -7,6 +7,7 @@ using Bunit;
 using FluentAssertions;
 using MudBlazor.Extensions;
 using MudBlazor.UnitTests.TestComponents;
+using MudBlazor.UnitTests.TestComponents.ThemeProvider;
 using MudBlazor.Utilities;
 using NUnit.Framework;
 
@@ -109,6 +110,7 @@ namespace MudBlazor.UnitTests.Components
                 "--mud-palette-table-hover: rgba(0,0,0,0.0392156862745098);",
                 "--mud-palette-divider: rgba(224,224,224,1);",
                 "--mud-palette-divider-light: rgba(0,0,0,0.8);",
+                "--mud-palette-skeleton: rgba(0,0,0,0.10980392156862745);",
                 "--mud-palette-gray-default: #9E9E9E;",
                 "--mud-palette-gray-light: #BDBDBD;",
                 "--mud-palette-gray-lighter: #E0E0E0;",
@@ -151,91 +153,85 @@ namespace MudBlazor.UnitTests.Components
                 "--mud-drawer-width-mini-left: 56px;",
                 "--mud-drawer-width-mini-right: 56px;",
                 "--mud-appbar-height: 64px;",
-                "--mud-typography-default-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-default-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-default-size: .875rem;",
                 "--mud-typography-default-weight: 400;",
                 "--mud-typography-default-lineheight: 1.43;",
                 "--mud-typography-default-letterspacing: .01071em;",
                 "--mud-typography-default-text-transform: none;",
-                "--mud-typography-h1-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h1-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h1-size: 6rem;",
                 "--mud-typography-h1-weight: 300;",
                 "--mud-typography-h1-lineheight: 1.167;",
                 "--mud-typography-h1-letterspacing: -.01562em;",
                 "--mud-typography-h1-text-transform: none;",
-                "--mud-typography-h2-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h2-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h2-size: 3.75rem;",
                 "--mud-typography-h2-weight: 300;",
                 "--mud-typography-h2-lineheight: 1.2;",
                 "--mud-typography-h2-letterspacing: -.00833em;",
                 "--mud-typography-h2-text-transform: none;",
-                "--mud-typography-h3-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h3-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h3-size: 3rem;",
                 "--mud-typography-h3-weight: 400;",
                 "--mud-typography-h3-lineheight: 1.167;",
                 "--mud-typography-h3-letterspacing: 0;",
                 "--mud-typography-h3-text-transform: none;",
-                "--mud-typography-h4-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h4-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h4-size: 2.125rem;",
                 "--mud-typography-h4-weight: 400;",
                 "--mud-typography-h4-lineheight: 1.235;",
                 "--mud-typography-h4-letterspacing: .00735em;",
                 "--mud-typography-h4-text-transform: none;",
-                "--mud-typography-h5-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h5-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h5-size: 1.5rem;",
                 "--mud-typography-h5-weight: 400;",
                 "--mud-typography-h5-lineheight: 1.334;",
                 "--mud-typography-h5-letterspacing: 0;",
                 "--mud-typography-h5-text-transform: none;",
-                "--mud-typography-h6-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-h6-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-h6-size: 1.25rem;",
                 "--mud-typography-h6-weight: 500;",
                 "--mud-typography-h6-lineheight: 1.6;",
                 "--mud-typography-h6-letterspacing: .0075em;",
                 "--mud-typography-h6-text-transform: none;",
-                "--mud-typography-subtitle1-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-subtitle1-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-subtitle1-size: 1rem;",
                 "--mud-typography-subtitle1-weight: 400;",
                 "--mud-typography-subtitle1-lineheight: 1.75;",
                 "--mud-typography-subtitle1-letterspacing: .00938em;",
                 "--mud-typography-subtitle1-text-transform: none;",
-                "--mud-typography-subtitle2-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-subtitle2-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-subtitle2-size: .875rem;",
                 "--mud-typography-subtitle2-weight: 500;",
                 "--mud-typography-subtitle2-lineheight: 1.57;",
                 "--mud-typography-subtitle2-letterspacing: .00714em;",
                 "--mud-typography-subtitle2-text-transform: none;",
-                "--mud-typography-body1-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-body1-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-body1-size: 1rem;",
                 "--mud-typography-body1-weight: 400;",
                 "--mud-typography-body1-lineheight: 1.5;",
                 "--mud-typography-body1-letterspacing: .00938em;",
                 "--mud-typography-body1-text-transform: none;",
-                "--mud-typography-body2-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-body2-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-body2-size: .875rem;",
                 "--mud-typography-body2-weight: 400;",
                 "--mud-typography-body2-lineheight: 1.43;",
                 "--mud-typography-body2-letterspacing: .01071em;",
                 "--mud-typography-body2-text-transform: none;",
-                "--mud-typography-input-family: 'Roboto','Helvetica','Arial','sans-serif';",
-                "--mud-typography-input-size: 1rem;",
-                "--mud-typography-input-weight: 400;",
-                "--mud-typography-input-lineheight: 1.1876;",
-                "--mud-typography-input-letterspacing: .00938em;",
-                "--mud-typography-input-text-transform: none;",
-                "--mud-typography-button-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-button-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-button-size: .875rem;",
                 "--mud-typography-button-weight: 500;",
                 "--mud-typography-button-lineheight: 1.75;",
                 "--mud-typography-button-letterspacing: .02857em;",
                 "--mud-typography-button-text-transform: uppercase;",
-                "--mud-typography-caption-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-caption-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-caption-size: .75rem;",
                 "--mud-typography-caption-weight: 400;",
                 "--mud-typography-caption-lineheight: 1.66;",
                 "--mud-typography-caption-letterspacing: .03333em;",
                 "--mud-typography-caption-text-transform: none;",
-                "--mud-typography-overline-family: 'Roboto','Helvetica','Arial','sans-serif';",
+                "--mud-typography-overline-family: Roboto, Helvetica, Arial, sans-serif;",
                 "--mud-typography-overline-size: .75rem;",
                 "--mud-typography-overline-weight: 400;",
                 "--mud-typography-overline-lineheight: 2.66;",
@@ -247,6 +243,7 @@ namespace MudBlazor.UnitTests.Components
                 "--mud-zindex-popover: 1200;",
                 "--mud-zindex-snackbar: 1500;",
                 "--mud-zindex-tooltip: 1600;",
+                "--mud-native-html-color-scheme: light;",
                 "}"
             };
 
@@ -453,6 +450,34 @@ namespace MudBlazor.UnitTests.Components
 
             // Assert
             Context.JSInterop.VerifyInvoke("watchDarkThemeMedia");
+        }
+
+        [Test]
+        public void ThemeProvider_ShouldHave_ClassName()
+        {
+            const string Scope = ":root";
+            var mudTheme = new MudTheme
+            {
+                PaletteDark = new PaletteDark
+                {
+                    Primary = Colors.Green.Darken1,
+                },
+                PseudoCss = new PseudoCss
+                {
+                    Scope = Scope
+                }
+            };
+            var comp = Context.RenderComponent<MudThemeProvider>(
+                parameters =>
+                    parameters.Add(p => p.Theme, mudTheme)
+                        .Add(p => p.IsDarkMode, true)
+            );
+            comp.Should().NotBeNull();
+
+            var styleNodes = comp.Nodes.OfType<IHtmlStyleElement>().ToArray();
+
+            var rootStyleNode = styleNodes[2];
+            rootStyleNode.ClassName.Should().Be("mud-theme-provider");
         }
     }
 }

@@ -776,6 +776,11 @@ namespace MudBlazor
 
         protected virtual void Dispose(bool disposing)
         {
+            try
+            {
+                _cancellationTokenSrc?.Cancel();
+            }
+            catch { /*ignored*/ }
             _cancellationTokenSrc?.Dispose();
         }
     }

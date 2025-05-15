@@ -1,12 +1,12 @@
 ﻿//Copyright(c) Alessandro Ghidini.All rights reserved.
 //Changes and improvements Copyright (c) The MudBlazor Team.
 
-using System;
 using System.Diagnostics;
 using static System.String;
 
 namespace MudBlazor
 {
+#nullable enable
     internal class SnackBarMessageState
     {
         private string AnimationId { get; }
@@ -78,7 +78,7 @@ namespace MudBlazor
 
                 var result = $"mud-snackbar {baseTypeClass} {Options.SnackbarTypeClass}";
 
-                if (Options.Onclick != null && !ShowActionButton)
+                if (Options.OnClick != null && !ShowActionButton)
                     result += " force-cursor";
 
                 return result;
