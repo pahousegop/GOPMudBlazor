@@ -20,28 +20,69 @@ namespace MudBlazor
         public RenderFragment EditButtons { get; set; }
 
         [Parameter]
+        public int MaxHTMLLength { get; set; } = 0;
+
+        [Parameter]
         public string UniqueID { get; set; }
 
         [Parameter]
-        public bool OuptDelta { get; set; } = true;
+        public bool OutputDelta { get; set; } = true;
 
         [Parameter]
         public RenderFragment ExtraToolbarContent { get; set; }
 
-        public RenderFragment DefaultToolbarContent { get; set; }
-        private RenderFragment ToolbarContent => builder =>
-        {
-            if (!HideDefaultToolbar)
-                DefaultToolbarContent(builder); // Render the default toolbar
-            
-            if(ExtraToolbarContent != null)
-                ExtraToolbarContent(builder); // Append extra toolbar items
-        };
+        [Parameter]
+        public string Theme { get; set; } = "snow";
+
+        [Parameter]
+        public string[] Formats { get; set; } = null;
+
+        [Parameter]
+        public string DebugLevel { get; set; } = "info";
+
+        /// <summary>
+        /// Support for normal css classes
+        /// </summary>
+        [Parameter]
+        public string EditorCssClass { get; set; }  = string.Empty;
+
+        /// <summary>
+        /// Support for normal css styles
+        /// </summary>
+        [Parameter]
+        public string EditorCssStyle { get; set; }  = string.Empty;
+
+        /// <summary>
+        /// Support for normal css classes
+        /// </summary>
+        [Parameter]
+        public string ToolbarCSSClass { get; set; }  = string.Empty;
+
+        /// <summary>
+        /// Support for normal css styles
+        /// </summary>
+        [Parameter]
+        public string ToolbarCssStyle { get; set; } = string.Empty;
+
+        [Parameter]
+        public bool BottomToolbar { get; set; } = false;
+
         [Parameter]
         public bool ToolbarLimited { get; set; } = false;
 
         [Parameter]
         public bool HideDefaultToolbar { get; set; } = false;
+        public RenderFragment DefaultToolbarContent { get; set; }
+
+        private RenderFragment ToolbarContent => builder =>
+        {
+            if (!HideDefaultToolbar)
+                DefaultToolbarContent(builder); // Render the default toolbar
+
+            if (ExtraToolbarContent != null)
+                ExtraToolbarContent(builder); // Append extra toolbar items
+        };
+
 
         protected string Classname =>
            new CssBuilder("mud-input-control mud-input-input-control")
@@ -54,49 +95,6 @@ namespace MudBlazor
                MudInputCssHelper.GetClassname(this,
                    () => !string.IsNullOrEmpty(Text) || Adornment == Adornment.Start || !string.IsNullOrWhiteSpace(Placeholder) || ShrinkLabel))
             .Build();
-
-        [Parameter]
-        public string Theme { get; set; }
-            = "snow";
-
-        [Parameter]
-        public string[] Formats { get; set; }
-            = null;
-
-        [Parameter]
-        public string DebugLevel { get; set; }
-            = "info";
-
-        /// <summary>
-        /// Support for normal css classes
-        /// </summary>
-        [Parameter]
-        public string EditorCssClass { get; set; }
-            = string.Empty;
-
-        /// <summary>
-        /// Support for normal css styles
-        /// </summary>
-        [Parameter]
-        public string EditorCssStyle { get; set; }
-            = string.Empty;
-
-        /// <summary>
-        /// Support for normal css classes
-        /// </summary>
-        [Parameter]
-        public string ToolbarCSSClass { get; set; }
-            = string.Empty;
-
-        /// <summary>
-        /// Support for normal css styles
-        /// </summary>
-        [Parameter]
-        public string ToolbarCssStyle { get; set; }
-            = string.Empty;
-
-        [Parameter]
-        public bool BottomToolbar { get; set; } = false;
 
         private ElementReference QuillElement;
         private ElementReference ToolBar;
@@ -165,6 +163,7 @@ namespace MudBlazor
             Value = await TextEditorInterop.GetHTML(
                 jsRuntime, QuillElement);
             Value = Value.Replace("&", "[%26]");
+            int len = Value.Length;
             await ValueChanged.InvokeAsync(Value);
         }
 
@@ -174,6 +173,13 @@ namespace MudBlazor
             Value = await TextEditorInterop.GetContentChunkStyle(
                 jsRuntime, QuillElement);
             Value = Value.Replace("&", "[%26]");
+            int len = Value.Length;
+            
+            if(MaxHTMLLength > 0 && len > MaxHTMLLength)
+            {
+                Value = (string) (await TextEditorInterop.RemoveExtraText(
+                jsRuntime, QuillElement, MaxHTMLLength));
+            }
             await ValueChanged.InvokeAsync(Value);
         }
 
@@ -210,7 +216,8 @@ namespace MudBlazor
         public async Task<string> GetContent()
         {
             //throw new NotImplementedException();
-            return await TextEditorInterop.GetContent(
+            TextEditorInterop TextEditorInterop = new TextEditorInterop();
+            return await TextEditorInterop.GetContentChunkStyle(
                 jsRuntime, QuillElement);
         }
 

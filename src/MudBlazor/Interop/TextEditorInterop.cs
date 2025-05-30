@@ -161,6 +161,16 @@ namespace MudBlazor.Interop
                 quillElement, text);
         }
 
+        internal static ValueTask<string> RemoveExtraText(
+            IJSRuntime jsRuntime,
+            ElementReference quillElement,
+            int MaxLength)
+        {
+            return jsRuntime.InvokeAsync<string>(
+                "QuillFunctions.deleteQuillText",
+                quillElement, MaxLength);
+        }
+
         //internal static async Task CreateQuill(IJSRuntime jsRuntime, ElementReference quillElement, string uniqueID, bool readOnly, string placeholder, string theme, string[] formats, string debugLevel, DotNetObjectReference<MudTextEditor> dotNetObjectReference)
         //{
         //    throw new NotImplementedException();

@@ -7,18 +7,15 @@
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
 
-    <MudTextEditor @ref="@quill" @bind-Value="Content" OutpuDelta="true" Label="Notes" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+    <MudTextEditor @ref="@quill" @bind-Value="Content" OutputDelta="true" Label="Notes" MaxHTMLLength="8000" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
     <div class="ql-editor display-only" style="width: 100%;"><span>@((MarkupString)@quillHtml)</span></div>
-  
+
 </div><br />
 <div>
     <MudButton  OnClick="SaveItem" >button</MudButton>
 </div> 
 @code {
-
-
-
 
 
 
@@ -44,7 +41,7 @@
         initialValue = Content;
 
         // JObject jsonObject = JObject.Parse(Content);
-        
+
         // var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
         // quillHtml = htmlConverter.Convert();
 
@@ -58,17 +55,19 @@
     private async Task SaveItem()
     {
 
-        var z = Content;
+        string z = Content;
+
+
 
         var d1 = await quill.GetContent();
-        
+
+        var html = await quill.GetHTML();
         JObject jsonObject = JObject.Parse(d1);
         var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
         quillHtml = htmlConverter.Convert();
-        
-        var h = await quill.GetHTML();
-        
-        var x = Content2;
+        var n = quillHtml.Length;
+
+        var g = "";
     }
 }
 

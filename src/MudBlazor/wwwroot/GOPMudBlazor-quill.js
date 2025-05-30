@@ -83,6 +83,35 @@
 
             return quillElement.__quill.deleteText(editorIndex, selectionLength)
                 .concat(quillElement.__quill.insertText(editorIndex, text));
+        },
+
+        deleteQuillText: function (quillElement, maxLen) {
+
+            let htmlContent = QuillFunctions.removeEmptySpan(quillElement.__quill.root.innerHTML);
+            var cnt = 0;
+            if (htmlContent.length > maxLen) {
+                // Convert Quill content into a Delta object
+                let delta = quillElement.__quill.getContents();
+                
+                // Start trimming from the end until HTML is within limits
+                while (QuillFunctions.removeEmptySpan(quillElement.__quill.root.innerHTML).length > maxLen && delta.ops.length > 0) {
+                    cnt += 1;
+                    var d = QuillFunctions.removeEmptySpan(quillElement.__quill.root.innerHTML).length - maxLen;
+                    var z = d % 100;
+                    for (let i = 0; i < d / 1000; i++) {
+                        delta.ops.pop(); // Remove the last operation
+                    }
+                    
+                    quillElement.__quill.setContents(delta);
+                }
+            }
+            return QuillFunctions.getQuillContent(quillElement);
+            //quillElement.__quill.deleteText(maxLen, quillElement.__quill.getLength() - maxLen)   
+        },
+        removeEmptySpan: function (incomingHTML) {
+            var test = "abcdabcdabcd";
+            test = test.replaceAll("a", "g");
+            return incomingHTML.replaceAll('<span class="ql-ui" contenteditable="false"></span>', "");
         }
     };
 })();
