@@ -3,11 +3,12 @@
 @using Newtonsoft.Json.Linq
 @using QuillConverter
 @using System.Text.Json
+@inject ISnackbar snackbar
 
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
 
-    <MudTextEditor @ref="@quill" @bind-Value="Content" OutputDelta="true" Label="Notes" MaxHTMLLength="8000" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+    <MudTextEditor @ref="@quill" @bind-Value="Content" OutputDelta="true" Snackbar="snackbar" Label="Notes" MaxHTMLLength="55000" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
     <div class="ql-editor display-only" style="width: 100%;"><span>@((MarkupString)@quillHtml)</span></div>
 
@@ -57,8 +58,6 @@
     {
 
         string z = Content;
-
-
 
         var d1 = await quill.GetContent();
 

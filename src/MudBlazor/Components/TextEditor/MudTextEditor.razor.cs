@@ -17,6 +17,9 @@ namespace MudBlazor
         [Inject] protected IJSRuntime jsRuntime { get; set; } = default!;
 
         [Parameter]
+        public ISnackbar Snackbar { get; set; } = null;
+
+        [Parameter]
         public RenderFragment EditButtons { get; set; }
 
         [Parameter]
@@ -170,13 +173,21 @@ namespace MudBlazor
         private async Task SetValueFromContent()
         {
             TextEditorInterop TextEditorInterop = new TextEditorInterop();
-            Value = await TextEditorInterop.GetContentChunkStyle(
+            Value = await TextEditorInterop.GetHTML(
                 jsRuntime, QuillElement);
-            Value = Value.Replace("&", "[%26]");
+            Value = Value.Replace(@"<span class=""ql-ui"" contenteditable=""false""></span>", "");
+            
             int len = Value.Length;
 
             if (MaxHTMLLength > 0 && len > MaxHTMLLength)
             {
+                //Show message
+                if (Snackbar != null)
+                {
+                    Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+                    Snackbar.Add("Your content is too large and will be truncated", Severity.Error);
+                }
+
                 Value = (string)(await TextEditorInterop.RemoveExtraText(
                 jsRuntime, QuillElement, MaxHTMLLength));
             }

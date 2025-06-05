@@ -98,19 +98,19 @@
                     cnt += 1;
                     var d = QuillFunctions.removeEmptySpan(quillElement.__quill.root.innerHTML).length - maxLen;
                     var z = d % 100;
-                    for (let i = 0; i < d / 1000; i++) {
-                        delta.ops.pop(); // Remove the last operation
-                    }
+                  
+                    var amount = Math.ceil(d / 60)
+                    
+                    delta.ops.splice(amount * -1,  amount);
 
                     quillElement.__quill.setContents(delta);
                 }
             }
-            return QuillFunctions.getQuillContent(quillElement);
-            //quillElement.__quill.deleteText(maxLen, quillElement.__quill.getLength() - maxLen)   
+
+            return QuillFunctions.getQuillContent(quillElement); 
         },
+
         removeEmptySpan: function (incomingHTML) {
-            var test = "abcdabcdabcd";
-            test = test.replaceAll("a", "g");
             return incomingHTML.replaceAll('<span class="ql-ui" contenteditable="false"></span>', "");
         }
     };
