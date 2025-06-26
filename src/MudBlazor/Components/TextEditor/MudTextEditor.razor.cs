@@ -151,11 +151,11 @@ namespace MudBlazor
             debounceTimer?.Dispose(); // Dispose any previous timer
             if (OutputDelta)
             {
-                debounceTimer = new Timer(_ => SetValueFromContent(), null, 750, Timeout.Infinite);
+                debounceTimer = new Timer(_ => SetValueFromContent(), null, 550, Timeout.Infinite);
             }
             else
             {
-                debounceTimer = new Timer(_ => SetValueFromHTML(), null, 750, Timeout.Infinite);
+                debounceTimer = new Timer(_ => SetValueFromHTML(), null, 550, Timeout.Infinite);
             }
 
         }
@@ -173,10 +173,9 @@ namespace MudBlazor
         private async Task SetValueFromContent()
         {
             TextEditorInterop TextEditorInterop = new TextEditorInterop();
-            Value = await TextEditorInterop.GetHTML(
+            Value = await TextEditorInterop.GetContentChunkStyle(
                 jsRuntime, QuillElement);
-            Value = Value.Replace(@"<span class=""ql-ui"" contenteditable=""false""></span>", "");
-            
+            Value = Value.Replace("&", "[%26]");
             int len = Value.Length;
 
             if (MaxHTMLLength > 0 && len > MaxHTMLLength)
