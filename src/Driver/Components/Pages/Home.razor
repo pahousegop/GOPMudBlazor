@@ -7,7 +7,7 @@
 
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
-
+    <MudTextField T="string" Label="Filled" Variant="Variant.Outlined"></MudTextField>
     <MudTextEditor @ref="@quill" @bind-Value="Content" OutputDelta="true" Snackbar="snackbar" Label="Notes" MaxHTMLLength="55000" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
     <div class="ql-editor display-only" style="width: 100%;"><span>@((MarkupString)@quillHtml)</span></div>
