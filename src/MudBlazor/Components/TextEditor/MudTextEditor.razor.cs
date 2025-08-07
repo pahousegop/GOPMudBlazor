@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor.Interop;
@@ -126,25 +127,105 @@ namespace MudBlazor
                     Formats,
                     DebugLevel,
                     DotNetObjectReference.Create(this));
-
-                if (IsValueHTML)
-                {
-                    await TextEditorInterop.LoadQuillHTMLContent(
-                    jsRuntime,
-                    QuillElement,
-                    Value.Replace("[%26]", "&"));
-                }
-                else
-                {
-                    await TextEditorInterop.LoadQuillContent(
-                    jsRuntime,
-                    QuillElement,
-                    Value.Replace("[%26]", "&"));
-                }
-
             }
+            if (string.IsNullOrEmpty(Value))
+            {
+                Value = @"{""ops"":[{""insert"":""""}]}";
+            }
+            if (IsValueHTML)
+            {
+                await TextEditorInterop.LoadQuillHTMLContent(
+                jsRuntime,
+                QuillElement,
+                Value.Replace("[%26]", "&"));
+            }
+            else
+            {
+                await TextEditorInterop.LoadQuillContent(
+                jsRuntime,
+                QuillElement,
+                Value.Replace("[%26]", "&"));
+            }
+
+
         }
 
+
+        public override async Task SetParametersAsync(ParameterView parameters)
+        {
+
+            await base.SetParametersAsync(parameters);
+
+            //var hasText = parameters.Contains<string>(nameof(Text));
+            //var hasValue = parameters.Contains<string>(nameof(Value));
+
+            //// Refresh Value from Text
+            //if (hasText && !hasValue)
+            //{
+            //    await UpdateValuePropertyAsync(false);
+            //}
+
+            //// Refresh Text from Value
+            //if (hasValue && !hasText)
+            //{
+            //    var updateText = true;
+            //    if (_isFocused && !_forceTextUpdate)
+            //    {
+            //        // Text update suppression, only in BSS (not in WASM).
+            //        // This is a fix for #1012
+            //        if (RuntimeLocation.IsServerSide && TextUpdateSuppression)
+            //        {
+            //            updateText = false;
+            //        }
+            //    }
+            //    if (updateText)
+            //    {
+            //        if(Value != null) {
+            //            if (!Value.ToLower().Contains("\"ops\""))
+            //            {
+            //                await TextEditorInterop.LoadQuillHTMLContent(
+            //                jsRuntime,
+            //                QuillElement,
+            //                Value.Replace("[%26]", "&"));
+            //            }
+            //            else
+            //            {
+            //                await TextEditorInterop.LoadQuillContent(
+            //                jsRuntime,
+            //                QuillElement,
+            //                Value.Replace("[%26]", "&"));
+            //            }
+            //        }
+            //        _forceTextUpdate = false;
+            //        await UpdateTextPropertyAsync(false);
+            //    }
+            //}
+        }
+        protected override Task SetTextAsync(string text, bool updateValue = true)
+        {
+            var s = Value;
+            return base.SetTextAsync(text, updateValue);
+        }
+
+        //protected override async Task SetTextAsync(string text, bool updateValue = true)
+        //{
+        //    if (!text.ToLower().Contains("\"ops\""))
+        //    {
+        //        await TextEditorInterop.LoadQuillHTMLContent(
+        //        jsRuntime,
+        //        QuillElement,
+        //        text.Replace("[%26]", "&"));
+        //    }
+        //    else
+        //    {
+        //        await TextEditorInterop.LoadQuillContent(
+        //        jsRuntime,
+        //        QuillElement,
+        //        text.Replace("[%26]", "&"));
+        //    }
+        //    await base.SetTextAsync(text, updateValue);
+        //    return;
+        //}
         [JSInvokable]
         public async Task HandleContentChange()
         {

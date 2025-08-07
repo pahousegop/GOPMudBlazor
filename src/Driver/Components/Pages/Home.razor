@@ -7,6 +7,20 @@
 
 <PageTitle>Home</PageTitle>
 <div style="display:block;">
+
+    @foreach (var item in items)
+    {
+        @* <MudTextField Placeholder="Title" Value="@("_noteText_" + item.Id)" Class="round-input" /> *@
+        <MudTextEditor @bind-Value="item.content" OutputDelta="true" Snackbar="snackbar" Label="@item.Id.ToString()" MaxHTMLLength="55000" UniqueID="@("_noteText_" + item.Id)" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
+        <br />
+    }
+
+</div>
+<br />
+<div>
+    <MudButton OnClick="AddNewItem">button</MudButton>
+</div>
+@* <div style="display:block;">
     <MudTextField T="string" Label="Filled" Variant="Variant.Outlined"></MudTextField>
     <MudTextEditor @ref="@quill" @bind-Value="Content" OutputDelta="true" Snackbar="snackbar" Label="Notes" MaxHTMLLength="55000" UniqueID="first" Variant="Variant.Outlined" BottomToolbar="false" Style="max-height: 400px;" />
 
@@ -16,58 +30,6 @@
 <br />
 <div>
     <MudButton OnClick="SaveItem">button</MudButton>
-</div>
-@code {
+</div> *@
 
-
-
-    string quillHtml = "";
-
-    //string? MyDate;
-    //string  usDate = "";
-
-    //IMask mask2 = new DateMask("MM/dd/yyyy");
-
-    [Parameter] public string Content { get; set; } = @"{""ops"":[{""attributes"":{""bold"":true},""insert"":""Header ""},{""insert"":""-""},{""attributes"":{""italic"":true},""insert"":"" (member)""},{""attributes"":{""align"":""center""},""insert"":""\n""},{""insert"":""Header 2""},{""attributes"":{""indent"":2},""insert"":""\n""},{""insert"":""test content 1""},{""attributes"":{""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 2""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 3""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 4""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 5""},{""attributes"":{""indent"":2,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 6""},{""attributes"":{""indent"":1,""list"":""bullet""},""insert"":""\n""},{""insert"":""test content 7""},{""attributes"":{""list"":""bullet""},""insert"":""\n""}]}";
-    //[Parameter] public string Content { get; set; } = @"{""ops"":[{""insert"":""labor &amp; industry\n""}]}";
-
-
-    [Parameter] public string Content2 { get; set; } = "test content 2";
-
-    public string initialValue { get; set; } = "";
-    public string textFieldValue { get; set; } = "This is the field";
-    public MudTextEditor quill = new();
-
-    protected override void OnInitialized()
-    {
-        initialValue = Content;
-
-        // JObject jsonObject = JObject.Parse(Content);
-
-        // var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
-        // quillHtml = htmlConverter.Convert();
-
-        // var s = "";
-        //var htmlConverter = new HtmlConverter(Content);
-        //string html = htmlConverter.Convert();
-        //MudGlobal.InputDefaults.Variant = Variant.Outlined;
-    }
-
-
-    private async Task SaveItem()
-    {
-
-        string z = Content;
-
-        var d1 = await quill.GetContent();
-
-        var html = await quill.GetHTML();
-        JObject jsonObject = JObject.Parse(d1);
-        var htmlConverter = new HtmlConverter((JArray)jsonObject["ops"]);
-        quillHtml = htmlConverter.Convert();
-        var n = quillHtml.Length;
-
-        var g = "";
-    }
-}
 
